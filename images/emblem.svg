@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="リボン">
+  <rect x="10" y="26" width="44" height="30" rx="4" fill="#8e1b2c"/>
+  <rect x="7" y="18" width="50" height="11" rx="3" fill="#b8323f"/>
+  <rect x="28" y="18" width="8" height="38" fill="#e8c98f"/>
+  <path d="M32 18c-4-9-15-12-17-6s10 7 17 6z" fill="none" stroke="#e8c98f" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M32 18c4-9 15-12 17-6s-10 7-17 6z" fill="none" stroke="#e8c98f" stroke-width="3" stroke-linejoin="round"/>
+</svg>

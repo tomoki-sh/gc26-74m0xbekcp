@@ -765,10 +765,20 @@ async function unlockWithPass(pass, remember) {
   } finally { passBusy = false; }
 }
 
-/* 2人の扉：Firebase から鍵を受け取る */
+/* 2人の扉：Firebase から鍵を受け取る。合わないときは理由が分かるように出す（合言葉の扉は残す） */
 function onContentKey(value) {
-  if (started || !value || typeof value.k !== "string") return;
-  openContent(GC.b64uDec(value.k)).catch(() => setStatus("この端末では合言葉で開いてください", "error"));
+  if (started) return;
+  const raw = value && typeof value === "object" ? value.k : value;
+  const text = typeof raw === "string" ? raw.trim().replace(/^["']|["']$/g, "") : "";
+  const hint = t => `${t.slice(0, 4)}…${t.slice(-4)}`;
+  if (!text) { setStatus("鍵が未登録です。合言葉で開いてください", "error"); return; }
+  let bytes = null;
+  try { bytes = GC.b64uDec(text); } catch (e) { /* 下で知らせる */ }
+  if (!bytes || bytes.length !== 32) {
+    setStatus(`登録された鍵の形が違います（${text.length}文字 ${hint(text)}）。合言葉で開いてください`, "error");
+    return;
+  }
+  openContent(bytes).catch(() => setStatus(`登録された鍵では開けません（${hint(text)}）。Console の key/k を確認してください。合言葉では開けます`, "error"));
 }
 
 /* ---------- 起動 ---------- */
